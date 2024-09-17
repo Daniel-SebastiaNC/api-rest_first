@@ -1,5 +1,7 @@
 package med.voll.api.service;
 
+import jakarta.validation.Valid;
+import med.voll.api.model.DadosAtualizacaoMedico;
 import med.voll.api.model.DadosCadastroMedico;
 import med.voll.api.model.DadosListagemMedico;
 import med.voll.api.model.Medico;
@@ -23,5 +25,10 @@ public class Service {
     public Page<DadosListagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
         return repository.findAll(pageable)
                 .map(DadosListagemMedico::new);
+    }
+
+    public void atualizar(@Valid DadosAtualizacaoMedico dados) {
+        var medico = repository.getReferenceById(dados.id());
+        medico.atualizarDados(dados);
     }
 }
