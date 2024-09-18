@@ -25,6 +25,8 @@ public class Medico {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo;
+
     public Medico(DadosCadastroMedico json) {
         this.crm =json.crm();
         this.email = json.email();
@@ -32,6 +34,7 @@ public class Medico {
         this.nome = json.nome();
         this.especialidade = json.especialidade();
         this.endereco = new Endereco(json.endereco());
+        this.ativo = true;
     }
 
     public Long getId() {
@@ -104,5 +107,9 @@ public class Medico {
         }
 
 
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

@@ -23,12 +23,17 @@ public class Service {
     }
 
     public Page<DadosListagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable) {
-        return repository.findAll(pageable)
+        return repository.findAllByAtivoTrue(pageable)
                 .map(DadosListagemMedico::new);
     }
 
     public void atualizar(@Valid DadosAtualizacaoMedico dados) {
         var medico = repository.getReferenceById(dados.id());
         medico.atualizarDados(dados);
+    }
+
+    public void excluir(Long id) {
+        var medico = repository.getReferenceById(id);
+        medico.excluir();
     }
 }
