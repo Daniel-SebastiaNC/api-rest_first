@@ -8,8 +8,10 @@ import med.voll.api.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("medicos")
@@ -20,24 +22,33 @@ public class MedicoController {
 
     @PostMapping
     @Transactional
-    public void cadastrar(@RequestBody @Valid DadosCadastroMedico json){
-        service.cadastrar(json);
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroMedico json, UriComponentsBuilder uriBuilder){
+        return service.cadastrar(json, uriBuilder);
     }
 
     @GetMapping
-    public Page<DadosListagemMedico> listar(Pageable pageable) {
+    public ResponseEntity<Page<DadosListagemMedico>> listar(Pageable pageable) {
         return service.listar(pageable);
+
     }
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados){
-        service.atualizar(dados);
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados){
+        return service.atualizar(dados);
+
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluir(@PathVariable Long id){
-        service.excluir(id);
+    public ResponseEntity excluir(@PathVariable Long id){
+        return service.excluir(id);
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id){
+        return service.detalhar(id);
+
     }
 }
