@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -47,6 +48,7 @@ public class MedicoController {
     }
 
     @GetMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity detalhar(@PathVariable Long id){
         return service.detalhar(id);
 
