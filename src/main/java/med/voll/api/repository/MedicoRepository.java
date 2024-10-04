@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
     Page<Medico> findAllByAtivoTrue(Pageable pageable);
-
+/*
     @Query("""
                 select m from Medico m
                 where
@@ -30,5 +30,23 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
                 order by rand()
                 limit 1
                 """)
+    Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, LocalDateTime data);*/
+
+    @Query("SELECT m FROM Medico m " +
+            "WHERE m.especialidade = :especialidade " +
+            "AND NOT EXISTS ( " +
+            "SELECT 1 FROM Consulta c " +
+            "WHERE c.medico = m " +
+            "AND c.data = :data " +
+            ") " +
+            "ORDER BY RANDOM()")
     Medico escolherMedicoAleatorioLivreNaData(Especialidade especialidade, @NotNull @Future LocalDateTime data);
+
+    @Query("""
+           SELECT m.ativo
+           FROM Medico m
+           WHERE
+           m.id = :id
+           """)
+    Boolean findAtivoById(Long id);
 }
